@@ -21,7 +21,10 @@ public enum ItemMatchingSystem {
     }
 
     public Optional<ItemFilterAdapter> getFilterAdapter(ItemStack stack) {
-        return adapters.stream().filter(adapter -> adapter.isFilterStack(stack)).findFirst();
+        for (var adapter : adapters) {
+            if (adapter.isFilterStack(stack)) return Optional.of(adapter);
+        }
+        return Optional.empty();
     }
 
     public boolean doesItemMatch(ItemStack filterStack, ItemStack toCheck, boolean matchNBT, boolean fuzzyNBT) {
