@@ -327,7 +327,11 @@ public class ItemTask extends Task implements Predicate<ItemStack> {
 					teamData.addProgress(this, craftedItem.getCount());
 				}
 			} else {
-				long c = Math.min(count, player.getInventory().items.stream().filter(this).mapToLong(ItemStack::getCount).sum());
+				long s = 0;
+				for (var stack : player.getInventory().items) {
+					if (this.test(stack)) s += stack.getCount();
+				}
+				long c = Math.min(count, s);
 				if (c > teamData.getProgress(this)) {
 					teamData.setProgress(this, c);
 				}
